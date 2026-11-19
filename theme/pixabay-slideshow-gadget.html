@@ -1,0 +1,332 @@
+<!-- ==========================================================
+     PIXABAY DYNAMIC HERO SLIDESHOW
+     API Key: 7211070-2c62ab0836499a0ace2218a13
+     Fetches fresh HD stock photos on every page load
+     ========================================================== -->
+<style>
+  .hero-slider-widget {
+    margin-bottom: 24px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  .hero-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .hero-nav a {
+    background: rgba(30, 41, 59, 0.85);
+    color: #f1f5f9 !important;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    transition: all 0.2s ease;
+  }
+  .hero-nav a:hover {
+    background: #0284c7;
+    color: #ffffff !important;
+    border-color: #38bdf8;
+    transform: translateY(-1px);
+  }
+  .hero-carousel {
+    position: relative;
+    width: 100%;
+    height: 380px;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #0f172a;
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+  }
+  @media only screen and (max-width: 768px) {
+    .hero-carousel {
+      height: 220px;
+      border-radius: 12px;
+    }
+  }
+  .hero-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+    background-size: cover;
+    background-position: center;
+    pointer-events: none;
+    display: flex;
+    align-items: flex-end;
+  }
+  .hero-slide.is-active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.05) 0%, rgba(15, 23, 42, 0.75) 75%, rgba(15, 23, 42, 0.95) 100%);
+  }
+  .hero-caption {
+    position: relative;
+    z-index: 2;
+    padding: 24px 30px;
+    max-width: 760px;
+    color: #ffffff;
+  }
+  @media only screen and (max-width: 768px) {
+    .hero-caption {
+      padding: 14px 16px;
+    }
+  }
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #0284c7, #6366f1);
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .hero-title {
+    margin: 0 0 6px;
+    font-size: clamp(1.15rem, 2.2vw, 1.65rem);
+    font-weight: 800;
+    line-height: 1.25;
+    color: #ffffff;
+  }
+  .hero-credit {
+    font-size: 12px;
+    color: #94a3b8;
+  }
+  .hero-credit a {
+    color: #38bdf8 !important;
+    text-decoration: none;
+  }
+  .hero-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 5;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: rgba(15, 23, 42, 0.65);
+    backdrop-filter: blur(6px);
+    color: #ffffff;
+    font-size: 22px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+  .hero-arrow:hover {
+    background: #0284c7;
+    border-color: #0284c7;
+  }
+  .hero-prev { left: 14px; }
+  .hero-next { right: 14px; }
+  @media only screen and (max-width: 768px) {
+    .hero-arrow {
+      width: 28px;
+      height: 28px;
+      font-size: 16px;
+    }
+    .hero-prev { left: 6px; }
+    .hero-next { right: 6px; }
+  }
+  .hero-dots {
+    position: absolute;
+    bottom: 16px;
+    right: 20px;
+    z-index: 5;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+  .hero-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    border: 0;
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.25s ease;
+  }
+  .hero-dot.is-active {
+    width: 22px;
+    border-radius: 999px;
+    background: #38bdf8;
+  }
+</style>
+
+<div class="hero-slider-widget">
+  <!-- Category Bar -->
+  <nav class="hero-nav" aria-label="Categories">
+    <a href="/">Home</a>
+    <a href="/search/label/News">News</a>
+    <a href="/search/label/Latest%20News">Latest News</a>
+    <a href="/search/label/International%20News">World</a>
+    <a href="/search/label/Short%20Stories">Short Stories</a>
+    <a href="/search/label/50-Word%20Stories">50-Word Stories</a>
+    <a href="/search/label/Quotes">Quotes</a>
+  </nav>
+
+  <!-- Carousel Window -->
+  <div class="hero-carousel" id="heroCarousel" aria-label="Featured Photography">
+    <div id="heroTrack"></div>
+    <button class="hero-arrow hero-prev" id="heroPrev" type="button" aria-label="Previous slide">&#8249;</button>
+    <button class="hero-arrow hero-next" id="heroNext" type="button" aria-label="Next slide">&#8250;</button>
+    <div class="hero-dots" id="heroDots"></div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var PIXABAY_KEY = "7211070-2c62ab0836499a0ace2218a13";
+
+    var fallbackPool = [
+      { url: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1200&q=80", title: "Misty Mountain Horizons", author: "Bailey Zindel" },
+      { url: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1200&q=80", title: "Starry Night Wilderness", author: "Benjamin Davies" },
+      { url: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=1200&q=80", title: "Foggy Evergreen Forests", author: "Federico Respini" },
+      { url: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1200&q=80", title: "Pacific Ocean Serenity", author: "Paul Gilmore" }
+    ];
+
+    var cur = 0;
+    var timer = null;
+    var slidesData = [];
+
+    function render(items) {
+      slidesData = items;
+      var track = document.getElementById("heroTrack");
+      var dotsBox = document.getElementById("heroDots");
+      if (!track || !items || !items.length) return;
+
+      track.innerHTML = "";
+      if (dotsBox) dotsBox.innerHTML = "";
+
+      items.forEach(function (item, idx) {
+        var slide = document.createElement("div");
+        slide.className = "hero-slide" + (idx === 0 ? " is-active" : "");
+        slide.style.backgroundImage = "url('" + item.url + "')";
+
+        var overlay = document.createElement("div");
+        overlay.className = "hero-overlay";
+
+        var caption = document.createElement("div");
+        caption.className = "hero-caption";
+
+        var tag = document.createElement("span");
+        tag.className = "hero-tag";
+        tag.textContent = "Featured";
+
+        var title = document.createElement("h2");
+        title.className = "hero-title";
+        title.textContent = item.title;
+
+        var credit = document.createElement("div");
+        credit.className = "hero-credit";
+        credit.innerHTML = item.user
+          ? 'Photo by <a href="https://pixabay.com/users/' + encodeURIComponent(item.user) + '/" target="_blank" rel="noopener">' + item.author + '</a> on Pixabay'
+          : 'Photography by ' + item.author;
+
+        caption.appendChild(tag);
+        caption.appendChild(title);
+        caption.appendChild(credit);
+
+        slide.appendChild(overlay);
+        slide.appendChild(caption);
+        track.appendChild(slide);
+
+        if (dotsBox) {
+          var dot = document.createElement("button");
+          dot.className = "hero-dot" + (idx === 0 ? " is-active" : "");
+          dot.type = "button";
+          dot.setAttribute("aria-label", "Slide " + (idx + 1));
+          dot.addEventListener("click", function () { goTo(idx); });
+          dotsBox.appendChild(dot);
+        }
+      });
+
+      startTimer();
+    }
+
+    function goTo(idx) {
+      if (!slidesData.length) return;
+      var slides = document.querySelectorAll(".hero-slide");
+      var dots = document.querySelectorAll(".hero-dot");
+      if (!slides.length) return;
+
+      slides[cur].classList.remove("is-active");
+      if (dots[cur]) dots[cur].classList.remove("is-active");
+
+      cur = (idx + slides.length) % slides.length;
+
+      slides[cur].classList.add("is-active");
+      if (dots[cur]) dots[cur].classList.add("is-active");
+    }
+
+    function next() { goTo(cur + 1); }
+    function prev() { goTo(cur - 1); }
+
+    function startTimer() {
+      stopTimer();
+      timer = setInterval(next, 6000);
+    }
+
+    function stopTimer() {
+      if (timer) clearInterval(timer);
+    }
+
+    var prevBtn = document.getElementById("heroPrev");
+    var nextBtn = document.getElementById("heroNext");
+    var carousel = document.getElementById("heroCarousel");
+
+    if (prevBtn) prevBtn.addEventListener("click", function () { prev(); startTimer(); });
+    if (nextBtn) nextBtn.addEventListener("click", function () { next(); startTimer(); });
+    if (carousel) {
+      carousel.addEventListener("mouseenter", stopTimer);
+      carousel.addEventListener("mouseleave", startTimer);
+    }
+
+    // Dynamic fetch from Pixabay API (random page 1-30 on every visit)
+    var randomPage = Math.floor(Math.random() * 30) + 1;
+    var query = encodeURIComponent("nature landscape mountains travel");
+    var endpoint = "https://pixabay.com/api/?key=" + PIXABAY_KEY +
+                   "&q=" + query +
+                   "&image_type=photo&orientation=horizontal&safesearch=true&per_page=6&page=" + randomPage;
+
+    fetch(endpoint)
+      .then(function (res) {
+        if (!res.ok) throw new Error("Status " + res.status);
+        return res.json();
+      })
+      .then(function (data) {
+        if (data.hits && data.hits.length > 0) {
+          var items = data.hits.map(function (h) {
+            var tagWords = (h.tags || "Landscape").split(",");
+            var mainTag = tagWords[0].trim();
+            return {
+              url: h.largeImageURL || h.webformatURL,
+              title: mainTag.charAt(0).toUpperCase() + mainTag.slice(1) + " Horizons",
+              author: h.user || "Pixabay",
+              user: h.user
+            };
+          });
+          render(items);
+        } else {
+          render(fallbackPool);
+        }
+      })
+      .catch(function (err) {
+        console.warn("Pixabay load fallback:", err);
+        render(fallbackPool);
+      });
+  })();
+</script>

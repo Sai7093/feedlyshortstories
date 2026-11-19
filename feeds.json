@@ -1,0 +1,86 @@
+{
+  "settings": {
+    "db_path": "data/blog.db",
+    "max_posts_per_run": 3,
+    "max_posts_per_day": 25,
+    "default_status": "LIVE",
+    "request_timeout_sec": 20,
+    "user_agent": "FeedlyShortStoriesBot/1.0 (+https://feedlyshortstories.blogspot.com/)",
+    "min_summary_chars": 30,
+    "post_delay_sec": 2,
+    "read_more_text": "Read full story"
+  },
+  "label_map": {
+    "ndtv news - special": "NDTV News",
+    "ndtv news- special": "NDTV News",
+    "ndtv news": "NDTV News",
+    "latest all news": "Latest News",
+    "latest international news": "International News",
+    "all info": "News",
+    "world breaking news - times of india": "International News",
+    "world news headlines": "International News",
+    "sports news updates - ndtvsports.com": "Sports",
+    "stories": "Short Stories",
+    "short story": "Short Stories",
+    "short stories": "Short Stories",
+    "short stories in 50words": "50-Word Stories",
+    "50-word stories": "50-Word Stories",
+    "good morning": "Good Morning",
+    "good morning 🌅": "Good Morning",
+    "good morning story": "Good Morning Stories",
+    "quotes": "Quotes",
+    "brainyquote": "Quotes",
+    "inspiration": "Inspiration",
+    "feedlyshortstories": "Featured"
+  },
+  "feeds": [
+    {
+      "name": "NDTV Top Stories",
+      "url": "https://feeds.feedburner.com/ndtvnews-top-stories",
+      "enabled": true,
+      "labels": ["News", "Latest News", "NDTV News"],
+      "title_prefix": "",
+      "source_label": "NDTV",
+      "max_per_run": 2,
+      "include_feed_tags": false,
+      "include_image": true,
+      "status": "LIVE"
+    },
+    {
+      "name": "NDTV World News",
+      "url": "https://feeds.feedburner.com/ndtvnews-world-news",
+      "enabled": true,
+      "labels": ["News", "International News", "NDTV News"],
+      "title_prefix": "",
+      "source_label": "NDTV World",
+      "max_per_run": 1,
+      "include_feed_tags": false,
+      "include_image": true,
+      "status": "LIVE"
+    },
+    {
+      "name": "Times of India Top Stories",
+      "url": "https://timesofindia.indiatimes.com/rssfeedstopstories.cms",
+      "enabled": true,
+      "labels": ["News", "Latest News", "Times of India"],
+      "title_prefix": "",
+      "source_label": "Times of India",
+      "max_per_run": 2,
+      "include_feed_tags": false,
+      "include_image": true,
+      "status": "LIVE"
+    },
+    {
+      "name": "Custom Short Stories Feed (Example)",
+      "url": "https://example.com/short-stories/rss.xml",
+      "enabled": false,
+      "labels": ["Short Stories", "Featured"],
+      "title_prefix": "",
+      "source_label": "Original Source",
+      "max_per_run": 1,
+      "include_feed_tags": true,
+      "include_image": true,
+      "status": "DRAFT"
+    }
+  ]
+}

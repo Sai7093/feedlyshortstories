@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+*.egg-info/
+
+# Local secrets & OAuth files (NEVER commit these)
+.env
+.env.*
+client_secret*.json
+credentials*.json
+token*.json
+
+# Large local backups & full-body archives (keep these locally or in Google Drive)
+*.xml
+!theme/*.xml
+data/archive.db
+data/archive.db-*
+data/*.db-wal
+data/*.db-shm
+Takeout/
+takeout-*/
+*.atom
+followers.csv
+settings.csv
+profile.csv
+reading_list.csv
+*.sqlite.gz
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
