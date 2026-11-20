@@ -1,7 +1,7 @@
 {
   "settings": {
     "db_path": "data/blog.db",
-    "max_posts_per_run": 3,
+    "max_posts_per_run": 5,
     "max_posts_per_day": 25,
     "default_status": "LIVE",
     "request_timeout_sec": 20,
