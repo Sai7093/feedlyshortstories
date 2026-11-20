@@ -2,8 +2,8 @@ name: Blogger Autoblog & Webhook Runner
 
 on:
   schedule:
-    # Runs every 30 minutes (UTC). Change to '0 */1 * * *' for hourly.
-    - cron: '*/30 * * * *'
+    # Runs at off-peak minutes (:17 and :47) every hour to avoid GitHub Actions congestion
+    - cron: '17,47 * * * *'
 
   workflow_dispatch:
     inputs:
